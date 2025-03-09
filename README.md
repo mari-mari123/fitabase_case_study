@@ -23,7 +23,7 @@ Step2:仮想環境をアクティブ化
 source myenv/bin/activate
 Step3: 仮想環境内でpandasをインストール
 pip install pandas
-Step4: プロジェクトがおわったら仮想環境を無効化
+Step4: プロジェクトがおわったら仮想環境を無効化 ←このプロジェクトがおわったら必ずやってね
 deactivate
 
 # Ask
@@ -278,6 +278,12 @@ else:
 
 # Process
 データのスクリーニングまたは操作の文書化
+3.1 Task
+1. Check the data for errors.
+2. Choose your tools.
+3. Transform the data so you can work with it effectively.
+4. Document the cleaning process.
+
 
 # Analyze
 分析の要約
