@@ -278,32 +278,33 @@ else:
 
 # Process
 Documenting data screening and transformation
-3.1 Task
+
+## 3.1 Task
 1. Check the data for errors.
 2. Choose your tools.
 3. Transform the data so you can work with it effectively.
 4. Document the cleaning process.
 
-1. Check the data for errors.
+### 1. Check the data for errors.
 I have already checked the following during the prepare phase:
 * Check for missing values -> None
 * Check for date types
 * Check for duplicates -> There are duplicates with the same date and same Id, but different values.
 
-2. Choose your tools.
+### 2. Choose your tools.
 I chose Python because:
 * It is easier to manipulate data.
 * I am not affected by limitations such as data size constraints.
 
-3. Transform the data so you can work with it effectively.
+### 3. Transform the data so you can work with it effectively.
 Documented below.
 
-4. Document the cleaning process. (include task3)
-* Step 1: Check the data for errors
+### 4. Document the cleaning process. (include task3)
+#### Step 1: Check the data for errors
 - Checked for missing values, incorrect data types, and duplicates.
 - These checks are necessary to avoid unexpected results during analysis.
 
-* Step 2: Transform the data
+#### Step 2: Transform the data
 1. Combined two datasets to create one comprehensive dataset.
 ```python
 df_combine = pd.concat([df_daily_april, df_daily_may], ignore_index=True)
@@ -389,7 +390,7 @@ Id                                                                 ...
 df_daily['WeekDay'] = df_daily['ActivityDate'].dt.day_name()
 ```
 
-## Summary of Cleaning Process
+## ✅Summary of Cleaning Process
 * Combined and cleaned two datasets.
 * Standardized date format for consistency.
 * Aggregated duplicate rows.
@@ -398,7 +399,7 @@ df_daily['WeekDay'] = df_daily['ActivityDate'].dt.day_name()
 * Generated statistical summaries.
 * Added 'WeekDay' column for temporal analysis.
 
-## Conclusion
+## ✅Conclusion
 This process ensures that the dataset is clean, consistent, and ready for reliable analysis. Each step was carefully executed and documented to ensure transparency and reproducibility.
 
 # Analyze
