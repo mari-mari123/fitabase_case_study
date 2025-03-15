@@ -277,13 +277,129 @@ else:
 ```
 
 # Process
-データのスクリーニングまたは操作の文書化
+Documenting data screening and transformation
 3.1 Task
 1. Check the data for errors.
 2. Choose your tools.
 3. Transform the data so you can work with it effectively.
 4. Document the cleaning process.
 
+1. Check the data for errors.
+I have already checked the following during the prepare phase:
+* Check for missing values -> None
+* Check for date types
+* Check for duplicates -> There are duplicates with the same date and same Id, but different values.
+
+2. Choose your tools.
+I chose Python because:
+* It is easier to manipulate data.
+* I am not affected by limitations such as data size constraints.
+
+3. Transform the data so you can work with it effectively.
+Documented below.
+
+4. Document the cleaning process. (include task3)
+* Step 1: Check the data for errors
+- Checked for missing values, incorrect data types, and duplicates.
+- These checks are necessary to avoid unexpected results during analysis.
+
+* Step 2: Transform the data
+1. Combined two datasets to create one comprehensive dataset.
+```python
+df_combine = pd.concat([df_daily_april, df_daily_may], ignore_index=True)
+```
+
+2. Standardized date formats to ensure consistency.
+```python
+duplicates = df_combine[df_combine.duplicated(subset=['Id', 'ActivityDate'], keep=False)]
+```
+
+3. Aggregated duplicate rows (same Id and date) by taking the mean, assuming the difference has meaning.
+```python
+df_grouped = df_combine.groupby(['Id', 'ActivityDate']).mean().reset_index()
+duplicates_grouped = df_grouped[df_grouped.duplicated(subset=['Id', 'ActivityDate'], keep=False)]
+```
+
+4. Corrected `TotalDistance` based on `TrackerDistance + LoggedActivitiesDistance`, since original values were inconsistent.
+```python
+df_grouped['TotalDistance'] = round(df_grouped['TotalDistance'],2)
+df_grouped['CalculatedTotalDistance'] = round(df_grouped['TrackerDistance'] + df_grouped['LoggedActivitiesDistance'],2)
+not_equal_total_distance = df_grouped[df_grouped['CalculatedTotalDistance'] != df_grouped['TotalDistance']]
+df_grouped['TotalDistance'] = df_grouped['CalculatedTotalDistance']
+```
+
+5. Removed the incorrect `TotalDistance` column and kept `CalculatedTotalDistance`.
+```python
+df_grouped_without_TotalDistance = df_grouped[column_without_TotalDistance]
+```
+
+6. Created a new CSV file from the cleaned dataset for analysis.
+```python
+df_grouped_without_TotalDistance.to_csv('daily_activity_data.csv', index = False)
+df_daily = pd.read_csv('daily_activity_data.csv')
+```
+
+7. Checked overall data summary (mean, sum, etc.) to understand the data distribution.
+```python
+print(f"daily_activity_data: {df_daily.Id.nunique()} unique users")
+summary = df_daily.describe()
+df_by_Id_sum = round(df_daily[column_without_date].groupby('Id').sum(), 2)
+df_by_Id_mean = round(df_daily[column_without_date].groupby('Id').mean(), 2)
+```
+```bash
+------------Unique_user-----------
+daily_activity_data: 35 unique users
+```
+```bash
+------------Summary-----------
+                 Id    TotalSteps  TrackerDistance  LoggedActivitiesDistance  ...  LightlyActiveMinutes  SedentaryMinutes     Calories  CalculatedTotalDistance
+count  1.373000e+03   1373.000000      1373.000000               1373.000000  ...           1373.000000       1373.000000  1373.000000              1373.000000
+mean   4.782326e+09   7312.367808         5.214483                  0.128591  ...            186.353241        997.386380  2279.630736                 5.343044
+std    2.381544e+09   5174.307775         3.949408                  0.695630  ...            112.771702        307.157986   729.943107                 4.097995
+min    1.503960e+09      0.000000         0.000000                  0.000000  ...              0.000000          0.000000     0.000000                 0.000000
+25%    2.320127e+09   3271.000000         2.230000                  0.000000  ...            114.000000        732.000000  1799.000000                 2.260000
+50%    4.445115e+09   7007.000000         4.940000                  0.000000  ...            195.000000       1058.000000  2115.000000                 4.950000
+75%    6.962181e+09  10544.000000         7.480000                  0.000000  ...            260.000000       1246.000000  2766.000000                 7.630000
+max    8.877689e+09  36019.000000        28.030001                  6.727057  ...            720.000000       1440.000000  4900.000000                28.030000
+
+```
+```bash
+------------Sum by Id-----------
+            TotalSteps  TrackerDistance  LoggedActivitiesDistance  ...  SedentaryMinutes  Calories  CalculatedTotalDistance
+Id                                                                 ...
+1503960366    590096.0           382.32                      0.00  ...           41300.0   89419.5                   382.32
+1624580081    250965.0           168.74                      0.00  ...           62329.0   70620.0                   168.74
+1644430081    311237.0           226.35                      0.00  ...           45198.0  113503.0                   226.35
+1844505072    120320.5            79.56                      0.00  ...           49065.5   66954.5                    79.55
+1927972279     54219.0            37.55                      0.00  ...           51827.5   92824.0                    37.55
+```
+```bash
+------------Mean by Id-----------
+            TotalSteps  TrackerDistance  LoggedActivitiesDistance  ...  SedentaryMinutes  Calories  CalculatedTotalDistance
+Id                                                                 ...
+1503960366    12042.78             7.80                      0.00  ...            842.86   1824.89                     7.80
+1624580081     5121.73             3.44                      0.00  ...           1272.02   1441.22                     3.44
+1644430081     7780.92             5.66                      0.00  ...           1129.95   2837.58                     5.66
+1844505072     2864.77             1.89                      0.00  ...           1168.23   1594.15                     1.89
+1927972279     1290.93             0.89                      0.00  ...           1233.99   2210.10                     0.89
+```
+
+8. Added a 'WeekDay' column extracted from 'ActivityDate' for further analysis.
+```python
+df_daily['WeekDay'] = df_daily['ActivityDate'].dt.day_name()
+```
+
+## Summary of Cleaning Process
+* Combined and cleaned two datasets.
+* Standardized date format for consistency.
+* Aggregated duplicate rows.
+* Corrected TotalDistance based on logical calculation.
+* Created a clean dataset ready for analysis.
+* Generated statistical summaries.
+* Added 'WeekDay' column for temporal analysis.
+
+## Conclusion
+This process ensures that the dataset is clean, consistent, and ready for reliable analysis. Each step was carefully executed and documented to ensure transparency and reproducibility.
 
 # Analyze
 分析の要約
