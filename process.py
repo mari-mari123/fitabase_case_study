@@ -2,15 +2,15 @@
 # 1. Check the data for errors.
 '''
 I have already checked the following during the prepare phase:
-* check for missing value -> None
-* check for date type
+* Check for missing values -> None
+* Check for date types
 * Check for duplicates -> There are duplicates with the same date and same Id, but different values.
 '''
 
 # 2. Choose your tools.
 '''
-I choose Python because:
-* it is easier to manupulate data.
+I chose Python because:
+* It is easier to manipulate data.
 * I am not affected by limitations such as data size constraints.
 '''
 
@@ -82,6 +82,7 @@ df_grouped_without_TotalDistance.to_csv('daily_activity_data.csv', index = False
 df_daily = pd.read_csv('daily_activity_data.csv')
 
 # check unique user
+print('------------Unique_user-----------')
 print(f"daily_activity_data: {df_daily.Id.nunique()} unique users")
 
 # Assign columns except for 'ActivityDate'
@@ -91,12 +92,15 @@ column_without_date = [
 
 # overview of whole data
 summary = df_daily.describe()
+print('------------Summary-----------')
 print(summary)
 
 # sum and mean by Id
 df_by_Id_sum = round(df_daily[column_without_date].groupby('Id').sum(), 2)
 df_by_Id_mean = round(df_daily[column_without_date].groupby('Id').mean(), 2)
+print('------------Sum by Id-----------')
 print(df_by_Id_sum)
+print('------------Mean by Id-----------')
 print(df_by_Id_mean)
 
 # --------------------------------------------------------------
@@ -110,6 +114,17 @@ print(df_daily)
 
 # 4. Document the cleaning process.
 '''
-すでに Process の中で修正の理由を書いているので、最後に 「全体をまとめた一連のクリーニング手順」 を簡潔に整理するといいと思う。
-何を、なぜ、どのように修正したか を時系列順に書くと、あとで見直したときに理解しやすくなるよ！
+* Step 1: Check the data for errors
+- Checked for missing values, incorrect data types, and duplicates.
+- These checks are necessary to avoid unexpected results during analysis.
+
+* Step 2: Transform the data
+1. Combined two datasets to create one comprehensive dataset.
+2. Standardized date formats to ensure consistency.
+3. Aggregated duplicate rows (same Id and date) by taking the mean, assuming the difference has meaning.
+4. Corrected `TotalDistance` based on `TrackerDistance + LoggedActivitiesDistance`, since original values were inconsistent.
+5. Removed the incorrect `TotalDistance` column and kept `CalculatedTotalDistance`.
+6. Created a new CSV file from the cleaned dataset for analysis.
+7. Checked overall data summary (mean, sum, etc.) to understand the data distribution.
+8. Added a 'WeekDay' column extracted from 'ActivityDate' for further analysis.
 '''
