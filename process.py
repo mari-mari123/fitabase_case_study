@@ -112,6 +112,9 @@ df_daily['ActivityDate'] = pd.to_datetime(df_daily['ActivityDate'])
 df_daily['WeekDay'] = df_daily['ActivityDate'].dt.day_name()
 print(df_daily)
 
+# update csv file to add weekday column
+df_daily.to_csv('daily_activity_data_analyze.csv', index = False)
+
 # 4. Document the cleaning process.
 '''
 * Step 1: Check the data for errors
