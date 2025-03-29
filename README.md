@@ -404,6 +404,11 @@ This process ensures that the dataset is clean, consistent, and ready for reliab
 
 # Analyze
 分析の要約
+Key tasks
+1. Aggregate your data so it’s useful and accessible.
+2. Organize and format your data.
+3. Perform calculations.
+4. Identify trends and relationships.
 
 # Share
 補足的な視覚化と主な発見
