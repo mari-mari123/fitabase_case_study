@@ -2,6 +2,8 @@
 import pandas as pd
 import datetime as dt
 import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.ticker import FuncFormatter
 
 # Load your CSV files
 df_daily = pd.read_csv('daily_activity_data_analyze.csv')
@@ -17,8 +19,8 @@ df_daily['WeekDay'] = pd.Categorical(df_daily['WeekDay'], categories=week_order,
 ## total by weekday
 sum_by_weekday = df_daily[['TotalSteps','CalculatedTotalDistance','Calories','WeekDay']].groupby('WeekDay').sum()
 sum_by_weekday = sum_by_weekday.rename(columns={'TotalSteps': 'Total Steps', 'CalculatedTotalDistance': 'Total Distance', 'Calories': 'Total Calories'})
-
 # print(sum_by_weekday)
+
 ## mean by weekday
 mean_by_weekday = df_daily[['TotalSteps','CalculatedTotalDistance','Calories','WeekDay']].groupby('WeekDay').mean()
 mean_by_weekday = mean_by_weekday.rename(columns={'TotalSteps': 'Mean Steps', 'CalculatedTotalDistance': 'Mean Distance', 'Calories': 'Mean Calories'})
@@ -191,6 +193,109 @@ non_active_users_summary = non_active_users.describe()
 ### basic settings
 plt.figure(figsize=(5,5))
 
+# ✅トレンドの視覚化（曜日別、週別、月別の変化をグラフ化）
+## Weekday
+##needed data to make chaets
+
+weekday_sum_steps = [_ for _ in sum_by_weekday['Total Steps']]
+weekday_sum_calories = [_ for _ in sum_by_weekday['Total Calories']]
+
+weekday_average_steps = [round(_) for _ in mean_by_weekday['Mean Steps']]
+weekday_average_calories = [_ for _ in mean_by_weekday['Mean Calories']]
+
+## Total Steps
+
+def millions(x, pos):
+    return f'{x * 1e-6:.1f}M'
+sum_bar_steps = plt.bar(week_order, weekday_sum_steps)
+labels = [f"{v / 1_000_000:.2f}M" for v in weekday_sum_steps]
+plt.gca().yaxis.set_major_formatter(FuncFormatter(millions))
+plt.bar_label(sum_bar_steps, labels=labels, padding=6)
+plt.gca().set_ylim(1_200_000, 1750000)
+plt.title('Total Steps by Weekday', size=15)
+plt.xlabel('Weekday', size=15)
+plt.ylabel('Total Steps (Million)', size=15)
+plt.xticks(rotation=60)
+plt.tight_layout()
+plt.show()
+
+mean_step_bar = plt.bar(week_order, weekday_average_steps)
+plt.bar_label(mean_step_bar, padding=6)
+plt.gca().set_ylim(6500,8000)
+plt.title('Average Steps by Weekday', size=15)
+plt.xlabel('Weekday', size=15)
+plt.ylabel('Average Steps', size=15)
+plt.xticks(rotation=60)
+plt.ticklabel_format(style='plain',axis='y')
+plt.show()
+
+## Calories
+sum_bar_calories = plt.bar(week_order, weekday_sum_calories)
+plt.bar_label(sum_bar_calories, padding=6)
+plt.gca().set_ylim(400000,500000)
+plt.title('Total Consuming Calories by Weekday', size=15)
+plt.xlabel('Weekday', size=15)
+plt.ylabel('Total Calories', size=15)
+plt.xticks(rotation=60)
+plt.ticklabel_format(style='plain',axis='y')
+plt.show()
+
+
+mean_calory_bar = plt.bar(week_order, weekday_average_calories)
+plt.bar_label(mean_calory_bar, padding=6)
+plt.gca().set_ylim(2000,2500)
+plt.title('Average Consuming Calories by Weekday', size=15)
+plt.xlabel('Weekday', size=15)
+plt.ylabel('Average Calories', size=15)
+plt.xticks(rotation=60)
+plt.ticklabel_format(style='plain',axis='y')
+plt.show()
+
+
+## Daytype
+##needed data to make chaets (sumは明らかに平日のほうが日数が多いからやめた。平均だけ考える)
+daytype_mean_steps = [_ for _ in mean_by_daytype['TotalSteps']]
+daytype_mean_calirues = [_ for _ in mean_by_daytype['Calories']]
+day_type = ['Weekday','Weekend']
+
+dtype_bar_steps = plt.bar(day_type, daytype_mean_steps)
+plt.bar_label(dtype_bar_steps, padding=6)
+plt.gca().set_ylim(6000,8000)
+plt.title('Average Steps by Daytype', size=15)
+plt.xlabel('Daytype',size=15)
+plt.ylabel('Average Steps', size=15)
+plt.show()
+
+dtype_bar_calories = plt.bar(day_type, daytype_mean_calirues)
+plt.bar_label(dtype_bar_calories, padding=6)
+plt.gca().set_ylim(2000,2400)
+plt.title('Average Calories by Daytype', size=15)
+plt.xlabel('Daytype',size=15)
+plt.ylabel('Average Consuming Calories', size=15)
+plt.show()
+
+## Month
+##needed data to make chaets(sumは日付の日数が違うから平均値にする。比べても仕方がない。全体数が違うから)
+month_mean_steps = [_ for _ in mean_by_month['Mean Steps']]
+month_mean_calories = [_ for _ in mean_by_month['Mean Calories']]
+month = ['March','April','May']
+
+m_bar_steps = plt.bar(month, month_mean_steps)
+plt.bar_label(m_bar_steps, padding=6)
+plt.gca().set_ylim(4000,8000)
+plt.title('Average Steps by Month', size=15)
+plt.xlabel('Month',size=15)
+plt.ylabel('Average Consuming Calories', size=15)
+plt.show()
+
+m_bar_calories = plt.bar(month, month_mean_calories)
+plt.bar_label(m_bar_calories, padding=6)
+plt.gca().set_ylim(2000,2400)
+plt.title('Average Calories by Month', size=15)
+plt.xlabel('Month',size=15)
+plt.ylabel('Average Consuming Calories', size=15)
+plt.show()
+
 
 ## ✅Comparison between Active and Non-active users!
 ## needed data to make charts
@@ -227,7 +332,7 @@ plt.axvline(user_calories_mean, color='pink', linestyle='--', linewidth=2, label
 plt.legend()
 plt.show()
 
-### Comparison of VeryActiveMinutes
+## Comparison of VeryActiveMinutes
 
 #### total steps and very active minutes
 plt.scatter( x = active_user_steps, y = active_user_min, color = 'red', label = 'active user')
@@ -249,6 +354,17 @@ plt.show()
 
 
 ## 4. summarize overall
+
+'''
+🚨🚨🚨 ここからやってね〜
+このGPTの使ってるから、聞きたいことがあればここから！
+https://chatgpt.com/share/67deb553-f638-8006-8692-30d30d82822c
+4️⃣結果をサマリーとしてまとめる <-これからここ！！
+分析の途中でメモしたやつがあるけど、最初から書き始めてくれればいいよ。
+メモは忘れないように！って思って書いただけだと思うから。
+'''
+
+
 '''
 correlation result!
 
