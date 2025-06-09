@@ -14,18 +14,6 @@ pip: 25.0
 
 Chief Creative Officer(Urška Sršen) has asked the marketing analytics team to focus on a Bellabeat product and analyze smart device usage data in order to gain insight into how people are already using their smart devices.
 
-## 自分用のメモ
-pandasを使うのにあたって今回仮想環境を使うことにした。
-理由はプロジェクトごとに依存関係を気にするのが難しそうだと思ったので。
-Step1: myenvという仮想環境をpython内に作成
-python3 -m venv myenv
-Step2:仮想環境をアクティブ化
-source myenv/bin/activate
-Step3: 仮想環境内でpandasをインストール
-pip install pandas
-Step4: プロジェクトがおわったら仮想環境を無効化 ←このプロジェクトがおわったら必ずやってね
-deactivate
-
 # Ask
 1.1 Task
 * Identify the business task
@@ -464,7 +452,12 @@ By month, March have a different trend with April and May regarding total steps,
 We also compared between active and non-active users. Obviously, active users walk more steps than non-active users, but the distribution of consuming calories depends on the users. Of course, non-active users tend to be left side of the graph, and active ones tend to be right of one, but some non-active users consume calories more than the mean and median of it. About the relationship between total steps and very active miniutes, non-active users share almost same trends looking like positive correlation. On the other hand, that of active users are more variable. Overall, the correlation between total steps and very active miniutes are positive correlation, so it indicates users are using this device for recording walking steps.
 
 # Share
-補足的な視覚化と主な発見
+Key tasks
+1. Determine the best way to share your findings.
+2. Create effective data visualizations.
+3. Present your findings.
+4. Ensure your work is accessible.
+
 
 # Act
 分析に基づく、上位レベルのコンテンツ推奨事項
