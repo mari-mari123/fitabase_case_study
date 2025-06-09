@@ -205,6 +205,7 @@ plt.xlabel('Weekday', size=15)
 plt.ylabel('Total Steps (Million)', size=15)
 plt.xticks(rotation=60)
 plt.tight_layout()
+plt.savefig("total_steps_by_weekday.png", dpi=300)
 plt.show()
 
 mean_step_bar = plt.bar(week_order, weekday_average_steps)
@@ -215,6 +216,7 @@ plt.xlabel('Weekday', size=15)
 plt.ylabel('Average Steps', size=15)
 plt.xticks(rotation=60)
 plt.ticklabel_format(style='plain',axis='y')
+plt.savefig("average_steps_by_weekday.png", dpi=300)
 plt.show()
 
 ## Calories
@@ -226,6 +228,7 @@ plt.xlabel('Weekday', size=15)
 plt.ylabel('Total Calories', size=15)
 plt.xticks(rotation=60)
 plt.ticklabel_format(style='plain',axis='y')
+plt.savefig("total_consuming_calories_by_weekday.png", dpi=300)
 plt.show()
 
 
@@ -237,6 +240,7 @@ plt.xlabel('Weekday', size=15)
 plt.ylabel('Average Calories', size=15)
 plt.xticks(rotation=60)
 plt.ticklabel_format(style='plain',axis='y')
+plt.savefig("average_consuming_calories_by_weekday.png", dpi=300)
 plt.show()
 
 
@@ -252,6 +256,7 @@ plt.gca().set_ylim(6000,8000)
 plt.title('Average Steps by Daytype', size=15)
 plt.xlabel('Daytype',size=15)
 plt.ylabel('Average Steps', size=15)
+plt.savefig("average_steps_by_daytype.png", dpi=300)
 plt.show()
 
 dtype_bar_calories = plt.bar(day_type, daytype_mean_calirues)
@@ -260,6 +265,7 @@ plt.gca().set_ylim(2000,2400)
 plt.title('Average Calories by Daytype', size=15)
 plt.xlabel('Daytype',size=15)
 plt.ylabel('Average Consuming Calories', size=15)
+plt.savefig("average_calories_by_daytype.png", dpi=300)
 plt.show()
 
 ## Month
@@ -274,6 +280,7 @@ plt.gca().set_ylim(4000,8000)
 plt.title('Average Steps by Month', size=15)
 plt.xlabel('Month',size=15)
 plt.ylabel('Average Consuming Calories', size=15)
+plt.savefig("average_steps_by_month.png", dpi=300)
 plt.show()
 
 m_bar_calories = plt.bar(month, month_mean_calories)
@@ -282,6 +289,7 @@ plt.gca().set_ylim(2000,2400)
 plt.title('Average Calories by Month', size=15)
 plt.xlabel('Month',size=15)
 plt.ylabel('Average Consuming Calories', size=15)
+plt.savefig("average_calories_by_month.png", dpi=300)
 plt.show()
 
 
@@ -307,6 +315,7 @@ plt.ylabel('# of Users', size=15)
 plt.axvline(user_median_steps, color='green', linestyle='--', linewidth=2, label=f'Median Steps: {int(user_median_steps)}') #to show median steps
 plt.legend()
 plt.xticks(rotation=60)
+plt.savefig("distribution_of_total_steps.png", dpi=300)
 plt.show()
 
 ### Distribution of Calories
@@ -318,6 +327,7 @@ plt.ylabel('# of Users', size=15)
 plt.axvline(user_calories_median, color='green', linestyle='--', linewidth=2, label=f'Median Calories: {int(user_calories_median)}') #to show median
 plt.axvline(user_calories_mean, color='pink', linestyle='--', linewidth=2, label=f'Mean Calories: {int(user_calories_mean)}') #to show mean
 plt.legend()
+plt.savefig("distribution_of_calories.png", dpi=300)
 plt.show()
 
 ## Comparison of VeryActiveMinutes
@@ -329,6 +339,7 @@ plt.title('Active Users VS Non-active Users', size=15)
 plt.xlabel('Total Steps', size=15)
 plt.ylabel('Very Active Minutes', size=15)
 plt.legend()
+plt.savefig("active_users_vs_non-active_users_total_steps.png", dpi=300)
 plt.show()
 
 #### calories and vary active minutes
@@ -338,6 +349,7 @@ plt.title('Active Users VS Non-active Users', size=15)
 plt.xlabel('Calories', size=15)
 plt.ylabel('Very Active Minutes', size=15)
 plt.legend()
+plt.savefig("active_users_vs_non-active_users_calories.png", dpi=300)
 plt.show()
 
 
