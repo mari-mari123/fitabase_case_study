@@ -403,12 +403,65 @@ df_daily['WeekDay'] = df_daily['ActivityDate'].dt.day_name()
 This process ensures that the dataset is clean, consistent, and ready for reliable analysis. Each step was carefully executed and documented to ensure transparency and reproducibility.
 
 # Analyze
-分析の要約
 Key tasks
 1. Aggregate your data so it’s useful and accessible.
 2. Organize and format your data.
 3. Perform calculations.
 4. Identify trends and relationships.
+
+```python
+sum_bar_steps = plt.bar(week_order, weekday_sum_steps)
+```
+### By Weekday
+Sunday shows the lowest total steps, approximately 1.28 million, while Saturday has the highest, reaching around 1.54 million. From Monday to Friday, the total steps are relatively stable, averaging around 1.4 million. This trend is consistent when looking at the average steps per weekday.
+
+However, the trend in total calories burned differs. Monday, Wednesday, and Sunday all show similar calorie consumption, around 430,000, while the other weekdays range between 440,000 and 460,000. Despite Sunday recording the fewest steps, calorie consumption remains high, suggesting that users are engaging in other forms of activity beyond walking.
+
+Additionally, when analyzing activity types, Sunday records the highest sedentary time and the lowest very active minutes, supporting the idea that users are less physically active but still burning calories, possibly through different kinds of activities or due to body metabolism.
+
+### By Weektype
+Users tend to walk more on weekdays than on weekends, primarily because Sunday significantly lowers the weekend average. However, the average calories burned are almost the same: approximately 2280 on weekdays and 2277 on weekends.
+
+This suggests that even though users walk less on weekends, their calorie consumption remains steady, likely because of alternative physical activities or the body's baseline metabolic rate.
+
+### By Month
+March shows the lowest average steps, around 5000, whereas April and May average over 7000 steps, with a gap of approximately 2000 steps. However, the average calories burned remain stable across the three months, around 2200.
+
+Interestingly, in March, users spent an average of 1162 minutes sedentary and only 7 minutes in very active activities, compared to around 900 sedentary minutes and 20 very active minutes in April and May.
+This indicates that although users were less physically active in March, they maintained a similar calorie consumption level. This suggests either alternative activities not captured as steps or individual metabolic differences.
+
+### Compare between Active and Non-active users
+
+We classified users as active if their average steps were 7007 or higher, and non-active if lower, based on the overall median of total steps.
+
+Among active users, some recorded over 14,000 steps per day, showing a wider variance. In contrast, non-active users' step counts were more evenly distributed.
+
+Regarding calorie consumption, there is little difference in distribution between active and non-active users. Some non-active users burned more calories than the median and mean of all users, while some active users consumed fewer calories.
+This suggests that calorie consumption depends not only on activity levels but also on individual characteristics such as weight, muscle mass, basal metabolic rate, and types of exercise performed.
+
+Looking at the relationship between total steps and very active minutes:
+
+  * Non-active users show a relatively clear positive correlation between steps and very active minutes.
+  * Active users exhibit greater variability: even users with similar step counts sometimes had different very active minutes.
+  * Overall, the correlation between total steps and very active minutes is approximately 0.7, indicating a moderately strong positive relationship.
+
+This implies that users are primarily using the device to track their walking activities, but walking is not the sole contributor to their calorie expenditure.
+
+### Additional Notes
+* '''Activity Type by Weekday and Month''':
+Sunday and March show higher sedentary times and lower very active minutes compared to other periods, suggesting less intense physical activity.
+
+* '''Rate of Active Dates''':
+The active date rate is about 63%, meaning users were not active every day during the recorded period.
+This highlights that not all users recorded activities daily, which should be considered when interpreting aggregated data.
+
+
+
+### Conclusion
+By weekday, days except for Sunday are same trends regarding to total steps. However, the level of consuming calories are almost similar, so it indicates that users are doing additional activiy, not walking.
+By weektype, weekday is more active than weekend only respect to total steps because Sunday is the lowest steps, while their consumig calories are almost same because users consume it even more not by walking.
+By month, March have a different trend with April and May regarding total steps, while the trending on calories are almost same, so it implys that users did additional activity on March.
+We also compared between active and non-active users. Obviously, active users walk more steps than non-active users, but the distribution of consuming calories depends on the users. Of course, non-active users tend to be left side of the graph, and active ones tend to be right of one, but some non-active users consume calories more than the mean and median of it. About the relationship between total steps and very active miniutes, non-active users share almost same trends looking like positive correlation. On the other hand, that of active users are more variable. Overall, the correlation between total steps and very active miniutes are positive correlation, so it indicates users are using this device for recording walking steps.
 
 # Share
 補足的な視覚化と主な発見
