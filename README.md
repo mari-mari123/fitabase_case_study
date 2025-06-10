@@ -1,4 +1,7 @@
 # Bellabeat Case Study
+![pexels-daniel-reche-718241-3601094](https://github.com/user-attachments/assets/6355cbf3-002c-4509-b669-03dcff715784)
+Photo by [Daniel Reche](https://www.pexels.com/photo/person-jogging-3601094/)
+
 ## Introduction
 ###  Analysis overview
 We used the Fitabase dataset, which contains smart device usage data, to uncover insights that could inform Bellabeat’s marketing strategy.
@@ -38,10 +41,10 @@ Our task is to identify usage trends of non-Bellabeat smart devices and understa
 🧑‍💻 See full code in [prepare.py](https://github.com/mari-mari123/fitabase_case_study/blob/develop/scripts/prepare.py)
 
 * envirenment
-Device: Apple M1
-OS: macOS 15.0
-Python: 3.13.2
-pip: 25.0
+  * Device: Apple M1
+  * OS: macOS 15.0
+  * Python: 3.13.2
+  * pip: 25.0
 
 ## Process
 * Cleaned data using Python (pandas).
@@ -103,10 +106,10 @@ pip: 25.0
 * This implies users mainly use the device to track walking, but walking is not the only source of calorie expenditure.
 
 #### Additional Notes
-* '''Activity Type by Weekday and Month''':
+* **Activity Type by Weekday and Month**:
 Sunday and March show higher sedentary times and fewer very active minutes, indicating less intense activity.
 
-* '''Rate of Active Dates''':
+* **Rate of Active Dates**:
 The active date rate is about 63%, meaning users did not record activity every day, which should be considered in analysis.
 
 #### Conclusion
