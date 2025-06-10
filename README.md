@@ -1,463 +1,138 @@
-# Introduction
-## Analysis overview
-## Project information
-## About the company
-## Analysis and Business object
+# Bellabeat Case Study
+## Introduction
+*  Analysis overview
+We used the Fitabase dataset, which contains smart device usage data, to uncover insights that could inform Bellabeat’s marketing strategy.
+*  Project information
+Bellabeat’s Chief Creative Officer, Urška Sršen, requested the marketing analytics team to analyze how consumers use smart devices (excluding Bellabeat products) and to provide actionable insights for improving Bellabeat’s marketing approach.
+*  About the company
+Bellabeat is a high-tech company that creates health-focused smart products for women. Although currently a small player, the company has significant potential to grow in the competitive smart device market.
 
-## envirenment
-Tip: Apple M1
-OS: version 15.0
-python: 3.13.2
-pip: 25.0
+## Ask
+1. Task
+- [x] Identify the business task
+- [x] Consider key stakeholders
 
+2. Business Tasks
+Our task is to identify usage trends of non-Bellabeat smart devices and understand how consumers engage with them. Based on these insights, we aim to recommend strategies to enhance Bellabeat's marketing.
 
-
-Chief Creative Officer(Urška Sršen) has asked the marketing analytics team to focus on a Bellabeat product and analyze smart device usage data in order to gain insight into how people are already using their smart devices.
-
-# Ask
-1.1 Task
-* Identify the business task
-* Consider key stakeholders
-
-1.2 Business Tasks
-Our team's tasks are to identify the trends of the usage of smart devices (non-Bellabeat smart devices) and find how customers use non-Bellabeat devices. Also, we will give recommendations for Bellabeat marketing strategy.
-
-
-1.3 key stakeholders
+3. Key Stakeholders
 
 * Urška Sršen: Bellabeat’s co founder and Chief Creative Officer
 * Sando Mur: Mathematician and Bellabeat cofounder; key member of the Bellabeat executive team
 * Bellabeat marketing analytics team: A team of data analysts responsible for collecting, analyzing, and reporting data that helps guide Bellabeat’s marketing strategy.
 
+4. Business Questions
+* What are users’ activity patterns over time?
+* How do activity levels relate to calorie consumption?
+* Are there differences between active and non-active users?
 
-# Prepare
-2.1 Task
-* Download data and store it appropriately.
-* Identify how it’s organized.
-* Sort and filter the data.
-* Determine the credibility of the data.
+## Prepare
+* Combined two monthly datasets and removed duplicates by taking daily means for each user.
+* Checked for missing values (none found) and ensured data types were consistent.
+* Performed range checks (e.g., negative values, outliers).
+* Verified logical consistency (e.g., TotalDistance ≈ Tracker + LoggedActivities).
+* Final cleaned dataset: daily_activity_data.csv (1372 records, 35 users, March–May 2016)
+📝 See full cleaning process in [data_cleaning_details.md](https://github.com/mari-mari123/fitabase_case_study/blob/develop/data_cleaning_details.md)
+🧑‍💻 See full code in [prepare.py](https://github.com/mari-mari123/fitabase_case_study/blob/develop/scripts/prepare.py)
 
-2.2 the place where the data are stored
-* They are stored in local
-file path for the data from March 12th to April 11th: Documents/Data Analyst/fitabaseData/mturkfitbit_export_3.12.16-4.11.16
-file path for the data from April 12th to May 12th: Documents/Data Analyst/fitabaseData/mturkfitbit_export_4.12.16-5.12.16
+* envirenment
+Device: Apple M1
+OS: macOS 15.0
+Python: 3.13.2
+pip: 25.0
 
-2.3 how the data is organized
-* 'dailyActivity_merged.csv' are long format
-* Each row has the record of one day's activity divided by Id.
+## Process
+* Cleaned data using Python (pandas).
+* Created new columns such as WeekDay, Month, and CalculatedTotalDistance.
+* Removed extreme outliers (e.g., over 100,000 steps/day).
+* Standardized fields and exported final version for analysis.
+📝 See full cleaning process in [data_cleaning_details.md](https://github.com/mari-mari123/fitabase_case_study/blob/develop/data_cleaning_details.md)
+🧑‍💻 See full code in [process.py](https://github.com/mari-mari123/fitabase_case_study/blob/develop/scripts/process.py)
 
-2.4 Sort and filter the data
-* Marge two separate file ('Fitabase Data 3.12.16-4.11.16/dailyActivity_merged.csv' and 'Fitabase Data 4.12.16-5.12.16/dailyActivity_merged.csv')
-``` python
-import pandas as pd
+## Analyze
+📝 See full results step by step in [analyze.ipynb](https://github.com/mari-mari123/fitabase_case_study/blob/develop/notebooks/analyze.ipynb)
+🧑‍💻 See full code in [analyze.py](https://github.com/mari-mari123/fitabase_case_study/blob/develop/scripts/analyze.py)
+📈 See all charts in [images](https://github.com/mari-mari123/fitabase_case_study/tree/develop/images)
+1. Key tasks
+- [x] Aggregate your data so it’s useful and accessible.
+- [x] Organize and format your data.
+- [x] Perform calculations.
+- [x] Identify trends and relationships.
 
-# data from March to April
-df_daily_april = pd.read_csv('mturkfitbit_export_3.12.16-4.11.16/Fitabase Data 3.12.16-4.11.16/dailyActivity_merged.csv')
+2. Results
+### Analysis By Weekday
+* Sunday has the lowest total steps (approx. 1.28 million), while Saturday has the highest (approx. 1.54 million).
+* From Monday to Friday, steps are stable (avg. ~1.4 million).
+* However, calories burned on Sunday remain high (~430,000), suggesting other forms of physical activity.
+* Sunday also shows the highest sedentary time and lowest very active minutes.
 
-# data from April to May
-df_daily_may = pd.read_csv('mturkfitbit_export_4.12.16-5.12.16/Fitabase Data 4.12.16-5.12.16/dailyActivity_merged.csv')
+### Analysis By Weektype
+* Users walk more on weekdays than on weekends.
+* This difference is mainly due to Sunday, which significantly lowers the weekend average step count.
+* Average calories burned are nearly the same:
+  * Weekdays: ~2280 kcal
+  * Weekends: ~2277 kcal
+* Despite fewer steps on weekends, calorie burn remains stable.
+* This indicates users may engage in alternative physical activities or burn calories through their basal metabolic rate.
+### Monthly Trends
+* March has the lowest average steps (~5,000), while April and May average over 7,000 steps—a difference of about 2,000 steps.
+* Despite lower activity in March, average calorie burn remains stable at around 2,200 across all three months.
+* In March, users were more sedentary (average of 1,162 minutes) and spent less time being very active (7 minutes), compared to ~900 sedentary minutes and ~20 very active minutes in April and May.
+* This suggests users maintained similar calorie expenditure in March through other forms of activity or metabolic differences.
 
-# check only above 5 data
-print(df_daily_april.head())
-print(df_daily_may.head())
+### Active VS Non-active Users
 
-# check whether the columns in the both files are the same -> they are the same column
-
-column1 = df_daily_april.columns
-column2 = df_daily_may.columns
-
-if column1.equals(column2):
-  print("they are same column")
-else:
-  print("the column name are different")
-  print("file 1 column name:", column1)
-  print("file 2 column name:", column2)
-
-# combine two file
-df_combine = pd.concat([df_daily_april, df_daily_may], ignore_index=True)
-```
-
-* Identify and fix duplicate data
-``` python
-duplicates = df_combine[df_combine.duplicated(subset=['Id', 'ActivityDate'], keep=False)]
-print(duplicates)
-
-# the data disapeared because of grouping
-df_combine['ActivityDate'] = pd.to_datetime(df_combine['ActivityDate'], format='%m/%d/%Y')
-
-# get a mean
-df_grouped = df_combine.groupby(['Id', 'ActivityDate']).mean().reset_index()
-duplicates_grouped = df_grouped[df_grouped.duplicated(subset=['Id', 'ActivityDate'], keep=False)]
-
-if duplicates_grouped.empty:
-  print("there is no duplicates")
-else:
-  print(duplicates_grouped)
-
-# check whether the not needed data is not delited
-duplicates_count = df_combine.duplicated(subset=['Id', 'ActivityDate'], keep=False).sum()
-print(duplicates_count) #-> 48
-print(df_grouped.tail()) #1396-24=1372 only duplicated data were fixed
-```
-
-* checking for missing values
-``` python
-print(df_grouped.isnull().sum())
-```
-
-``` python
-# the result -> nothing
-Id                          0
-ActivityDate                0
-TotalSteps                  0
-TotalDistance               0
-TrackerDistance             0
-LoggedActivitiesDistance    0
-VeryActiveDistance          0
-ModeratelyActiveDistance    0
-LightActiveDistance         0
-SedentaryActiveDistance     0
-VeryActiveMinutes           0
-FairlyActiveMinutes         0
-LightlyActiveMinutes        0
-SedentaryMinutes            0
-Calories                    0
-```
-
-2.5 Determine the credibility of the data
-ROCCC
-| ROCCC            | Result      |
-|:-----------------|------------:|
-| Reliable         | This dataset is not fully reliable because the data description states that thirty eligible Fitbit users consented, yet the dataset contains data from 33 to 35 individuals.|
-| Origin           | This dataset was made by Furberg, Brinton, Keting, Keating and Ortiz. Its origin is Zendo.org.|
-| Comprehensive    | Not clear because there is no information in sex, age and how to correct data.|
-| Current         | No. This dataset is made based on 2016. That's why this dataset is not the latest information. The data was last refreshed on March 31th, 2016.|
-| Cited            | Yes. There is a citation. |
-
-* checking data type
-``` python
-print(df.grouped.dtypes)
-```
-``` python
-# the result -> OK
-Id                                   int64
-ActivityDate                datetime64[ns]
-TotalSteps                         float64
-TotalDistance                      float64
-TrackerDistance                    float64
-LoggedActivitiesDistance           float64
-VeryActiveDistance                 float64
-ModeratelyActiveDistance           float64
-LightActiveDistance                float64
-SedentaryActiveDistance            float64
-VeryActiveMinutes                  float64
-FairlyActiveMinutes                float64
-LightlyActiveMinutes               float64
-SedentaryMinutes                   float64
-Calories                           float64
-```
-* range validation
-```python
-#  checking values more than or equal to 0
-for column in df_grouped.columns[2:]:
-  print('Checking:', column)
-  result = df_grouped[df_grouped[column] < 0]
-
-  if not result.empty:
-    print('Found negativi values in', column)
-    print(result[[column]])
-  else:
-    print('No negative values in', column)
-```
-``` python
-# result -> OK
-Checking: TotalSteps
-No negative values in TotalSteps
-Checking: TotalDistance
-No negative values in TotalDistance
-Checking: TrackerDistance
-No negative values in TrackerDistance
-Checking: LoggedActivitiesDistance
-No negative values in LoggedActivitiesDistance
-Checking: VeryActiveDistance
-No negative values in VeryActiveDistance
-Checking: ModeratelyActiveDistance
-No negative values in ModeratelyActiveDistance
-Checking: LightActiveDistance
-No negative values in LightActiveDistance
-Checking: SedentaryActiveDistance
-No negative values in SedentaryActiveDistance
-Checking: VeryActiveMinutes
-No negative values in VeryActiveMinutes
-Checking: FairlyActiveMinutes
-No negative values in FairlyActiveMinutes
-Checking: LightlyActiveMinutes
-No negative values in LightlyActiveMinutes
-Checking: SedentaryMinutes
-No negative values in SedentaryMinutes
-Checking: Calories
-No negative values in Calories
-```
-
-* Consistency check
-To find values when TotalSteps are 0, Calories are not 0.
-Such a data is 127 rows.
-```python
-inconsistent_data = df_grouped[(df_grouped['TotalSteps'] == 0) & (df_grouped['Calories'] != 0)]
-
-if not inconsistent_data.empty:
-  for column in df_grouped.columns[3:-1]:
-    print('Checking: ',column)
-    column_inconsistent = inconsistent_data[inconsistent_data[column] != 0]
-    print(column_inconsistent)
-else:
-  print('NO data found')
-```
-
-So we have to check whether it was recorded any activities, except for TotalSteps for 127 rows.
-
-- There is calorie consumption but no activity record → Exclude
-```python
-non_zero_calories = df_grouped[(df_grouped['Calories'] != 0) & (df_grouped.iloc[:, :-1].eq(0).all(axis=1))]
-print(non_zero_calories)
-```
-- There is no calorie consumption but an activity record exists → Exclude
-```python
-zero_calories = df_grouped[(df_grouped['Calories'] == 0) & (df_grouped.iloc[:, :-1].ne(0).all(axis=1))]
-print(zero_calories)
-```
-- Check if the consumed calories are abnormally high (more than 10,000) → Exclude
-```python
-unrealistic_calories = df_grouped[df_grouped['Calories'] > 10000]
-print(unrealistic_calories)
-```
-- Check if the step count is extremely high (more than 100,000) → Exclude
-```python
-unrealistic_steps = df_grouped[df_grouped['TotalSteps'] > 100000]
-print(unrealistic_steps)
-```
-- TotalDistance = TrackerDistance + LoggedActivitiesDistance?
-```python
-df_grouped['TotalDistance'] = round(df_grouped['TotalDistance'],2)
-df_grouped['calculated_total_distance'] = round(df_grouped['TrackerDistance'] + df_grouped['LoggedActivitiesDistance'],2)
-print(df_grouped[['calculated_total_distance', 'TotalDistance']].head())
-
-# Rows where TotalDistance does not match calculated_total_distance → Column 54
-# Possible device synchronization errors or missing data, so modify TotalDistance to match calculated_total_distance
-
-not_equal_total_distance = df_grouped[df_grouped['calculated_total_distance'] != df_grouped['TotalDistance']]
-print(not_equal_total_distance)
-df_grouped['TotalDistance'] = df_grouped['calculated_total_distance']
-```
-
-- Ensure no future dates are included → OK
-```python
-future_dates = df_grouped[df_grouped['ActivityDate'] > pd.to_datetime('today')]
-print(future_dates)
-```
-- Ensure there are no duplicate combinations of ID and ActivityDate → OK
-```python
-duplicate_id_date = df_grouped[df_grouped.duplicated(subset=['Id', 'ActivityDate'], keep=False)]
-if duplicate_id_date.empty:
-  print('There is no duplicates')
-else:
-  print(duplicate_id_date)
-```
-
-# Process
-Documenting data screening and transformation
-
-## 3.1 Task
-1. Check the data for errors.
-2. Choose your tools.
-3. Transform the data so you can work with it effectively.
-4. Document the cleaning process.
-
-### 1. Check the data for errors.
-I have already checked the following during the prepare phase:
-* Check for missing values -> None
-* Check for date types
-* Check for duplicates -> There are duplicates with the same date and same Id, but different values.
-
-### 2. Choose your tools.
-I chose Python because:
-* It is easier to manipulate data.
-* I am not affected by limitations such as data size constraints.
-
-### 3. Transform the data so you can work with it effectively.
-Documented below.
-
-### 4. Document the cleaning process. (include task3)
-#### Step 1: Check the data for errors
-- Checked for missing values, incorrect data types, and duplicates.
-- These checks are necessary to avoid unexpected results during analysis.
-
-#### Step 2: Transform the data
-1. Combined two datasets to create one comprehensive dataset.
-```python
-df_combine = pd.concat([df_daily_april, df_daily_may], ignore_index=True)
-```
-
-2. Standardized date formats to ensure consistency.
-```python
-duplicates = df_combine[df_combine.duplicated(subset=['Id', 'ActivityDate'], keep=False)]
-```
-
-3. Aggregated duplicate rows (same Id and date) by taking the mean, assuming the difference has meaning.
-```python
-df_grouped = df_combine.groupby(['Id', 'ActivityDate']).mean().reset_index()
-duplicates_grouped = df_grouped[df_grouped.duplicated(subset=['Id', 'ActivityDate'], keep=False)]
-```
-
-4. Corrected `TotalDistance` based on `TrackerDistance + LoggedActivitiesDistance`, since original values were inconsistent.
-```python
-df_grouped['TotalDistance'] = round(df_grouped['TotalDistance'],2)
-df_grouped['CalculatedTotalDistance'] = round(df_grouped['TrackerDistance'] + df_grouped['LoggedActivitiesDistance'],2)
-not_equal_total_distance = df_grouped[df_grouped['CalculatedTotalDistance'] != df_grouped['TotalDistance']]
-df_grouped['TotalDistance'] = df_grouped['CalculatedTotalDistance']
-```
-
-5. Removed the incorrect `TotalDistance` column and kept `CalculatedTotalDistance`.
-```python
-df_grouped_without_TotalDistance = df_grouped[column_without_TotalDistance]
-```
-
-6. Created a new CSV file from the cleaned dataset for analysis.
-```python
-df_grouped_without_TotalDistance.to_csv('daily_activity_data.csv', index = False)
-df_daily = pd.read_csv('daily_activity_data.csv')
-```
-
-7. Checked overall data summary (mean, sum, etc.) to understand the data distribution.
-```python
-print(f"daily_activity_data: {df_daily.Id.nunique()} unique users")
-summary = df_daily.describe()
-df_by_Id_sum = round(df_daily[column_without_date].groupby('Id').sum(), 2)
-df_by_Id_mean = round(df_daily[column_without_date].groupby('Id').mean(), 2)
-```
-```bash
-------------Unique_user-----------
-daily_activity_data: 35 unique users
-```
-```bash
-------------Summary-----------
-                 Id    TotalSteps  TrackerDistance  LoggedActivitiesDistance  ...  LightlyActiveMinutes  SedentaryMinutes     Calories  CalculatedTotalDistance
-count  1.373000e+03   1373.000000      1373.000000               1373.000000  ...           1373.000000       1373.000000  1373.000000              1373.000000
-mean   4.782326e+09   7312.367808         5.214483                  0.128591  ...            186.353241        997.386380  2279.630736                 5.343044
-std    2.381544e+09   5174.307775         3.949408                  0.695630  ...            112.771702        307.157986   729.943107                 4.097995
-min    1.503960e+09      0.000000         0.000000                  0.000000  ...              0.000000          0.000000     0.000000                 0.000000
-25%    2.320127e+09   3271.000000         2.230000                  0.000000  ...            114.000000        732.000000  1799.000000                 2.260000
-50%    4.445115e+09   7007.000000         4.940000                  0.000000  ...            195.000000       1058.000000  2115.000000                 4.950000
-75%    6.962181e+09  10544.000000         7.480000                  0.000000  ...            260.000000       1246.000000  2766.000000                 7.630000
-max    8.877689e+09  36019.000000        28.030001                  6.727057  ...            720.000000       1440.000000  4900.000000                28.030000
-
-```
-```bash
-------------Sum by Id-----------
-            TotalSteps  TrackerDistance  LoggedActivitiesDistance  ...  SedentaryMinutes  Calories  CalculatedTotalDistance
-Id                                                                 ...
-1503960366    590096.0           382.32                      0.00  ...           41300.0   89419.5                   382.32
-1624580081    250965.0           168.74                      0.00  ...           62329.0   70620.0                   168.74
-1644430081    311237.0           226.35                      0.00  ...           45198.0  113503.0                   226.35
-1844505072    120320.5            79.56                      0.00  ...           49065.5   66954.5                    79.55
-1927972279     54219.0            37.55                      0.00  ...           51827.5   92824.0                    37.55
-```
-```bash
-------------Mean by Id-----------
-            TotalSteps  TrackerDistance  LoggedActivitiesDistance  ...  SedentaryMinutes  Calories  CalculatedTotalDistance
-Id                                                                 ...
-1503960366    12042.78             7.80                      0.00  ...            842.86   1824.89                     7.80
-1624580081     5121.73             3.44                      0.00  ...           1272.02   1441.22                     3.44
-1644430081     7780.92             5.66                      0.00  ...           1129.95   2837.58                     5.66
-1844505072     2864.77             1.89                      0.00  ...           1168.23   1594.15                     1.89
-1927972279     1290.93             0.89                      0.00  ...           1233.99   2210.10                     0.89
-```
-
-8. Added a 'WeekDay' column extracted from 'ActivityDate' for further analysis.
-```python
-df_daily['WeekDay'] = df_daily['ActivityDate'].dt.day_name()
-```
-
-## ✅Summary of Cleaning Process
-* Combined and cleaned two datasets.
-* Standardized date format for consistency.
-* Aggregated duplicate rows.
-* Corrected TotalDistance based on logical calculation.
-* Created a clean dataset ready for analysis.
-* Generated statistical summaries.
-* Added 'WeekDay' column for temporal analysis.
-
-## ✅Conclusion
-This process ensures that the dataset is clean, consistent, and ready for reliable analysis. Each step was carefully executed and documented to ensure transparency and reproducibility.
-
-# Analyze
-Key tasks
-1. Aggregate your data so it’s useful and accessible.
-2. Organize and format your data.
-3. Perform calculations.
-4. Identify trends and relationships.
-
-```python
-sum_bar_steps = plt.bar(week_order, weekday_sum_steps)
-```
-### By Weekday
-Sunday shows the lowest total steps, approximately 1.28 million, while Saturday has the highest, reaching around 1.54 million. From Monday to Friday, the total steps are relatively stable, averaging around 1.4 million. This trend is consistent when looking at the average steps per weekday.
-
-However, the trend in total calories burned differs. Monday, Wednesday, and Sunday all show similar calorie consumption, around 430,000, while the other weekdays range between 440,000 and 460,000. Despite Sunday recording the fewest steps, calorie consumption remains high, suggesting that users are engaging in other forms of activity beyond walking.
-
-Additionally, when analyzing activity types, Sunday records the highest sedentary time and the lowest very active minutes, supporting the idea that users are less physically active but still burning calories, possibly through different kinds of activities or due to body metabolism.
-
-### By Weektype
-Users tend to walk more on weekdays than on weekends, primarily because Sunday significantly lowers the weekend average. However, the average calories burned are almost the same: approximately 2280 on weekdays and 2277 on weekends.
-
-This suggests that even though users walk less on weekends, their calorie consumption remains steady, likely because of alternative physical activities or the body's baseline metabolic rate.
-
-### By Month
-March shows the lowest average steps, around 5000, whereas April and May average over 7000 steps, with a gap of approximately 2000 steps. However, the average calories burned remain stable across the three months, around 2200.
-
-Interestingly, in March, users spent an average of 1162 minutes sedentary and only 7 minutes in very active activities, compared to around 900 sedentary minutes and 20 very active minutes in April and May.
-This indicates that although users were less physically active in March, they maintained a similar calorie consumption level. This suggests either alternative activities not captured as steps or individual metabolic differences.
-
-### Compare between Active and Non-active users
-
-We classified users as active if their average steps were 7007 or higher, and non-active if lower, based on the overall median of total steps.
-
-Among active users, some recorded over 14,000 steps per day, showing a wider variance. In contrast, non-active users' step counts were more evenly distributed.
-
-Regarding calorie consumption, there is little difference in distribution between active and non-active users. Some non-active users burned more calories than the median and mean of all users, while some active users consumed fewer calories.
-This suggests that calorie consumption depends not only on activity levels but also on individual characteristics such as weight, muscle mass, basal metabolic rate, and types of exercise performed.
-
-Looking at the relationship between total steps and very active minutes:
-
-  * Non-active users show a relatively clear positive correlation between steps and very active minutes.
-  * Active users exhibit greater variability: even users with similar step counts sometimes had different very active minutes.
-  * Overall, the correlation between total steps and very active minutes is approximately 0.7, indicating a moderately strong positive relationship.
-
-This implies that users are primarily using the device to track their walking activities, but walking is not the sole contributor to their calorie expenditure.
+* Users were classified as active if their average steps ≥ 7007, and non-active if below.
+* Active users had greater variation in steps (some > 14,000 steps/day), while non-active users had more evenly distributed and lower step counts.
+* Calorie consumption distributions did not differ significantly between the groups:
+  * Some non-active users burned more calories than the overall average.
+  * Some active users burned fewer calories than expected.
+* This suggests that calorie burn depends not just on steps, but also on individual traits (e.g., weight, muscle mass, metabolism, exercise type).
+* Regarding steps vs very active minutes:
+  * Non-active users show a clear positive correlation.
+  * Active users show more variability.
+  * Overall correlation ≈ 0.7, indicating a moderately strong relationship between steps and very active minutes.
+* This implies users mainly use the device to track walking, but walking is not the only source of calorie expenditure.
 
 ### Additional Notes
 * '''Activity Type by Weekday and Month''':
-Sunday and March show higher sedentary times and lower very active minutes compared to other periods, suggesting less intense physical activity.
+Sunday and March show higher sedentary times and fewer very active minutes, indicating less intense activity.
 
 * '''Rate of Active Dates''':
-The active date rate is about 63%, meaning users were not active every day during the recorded period.
-This highlights that not all users recorded activities daily, which should be considered when interpreting aggregated data.
-
-
+The active date rate is about 63%, meaning users did not record activity every day, which should be considered in analysis.
 
 ### Conclusion
-By weekday, days except for Sunday are same trends regarding to total steps. However, the level of consuming calories are almost similar, so it indicates that users are doing additional activiy, not walking.
-By weektype, weekday is more active than weekend only respect to total steps because Sunday is the lowest steps, while their consumig calories are almost same because users consume it even more not by walking.
-By month, March have a different trend with April and May regarding total steps, while the trending on calories are almost same, so it implys that users did additional activity on March.
-We also compared between active and non-active users. Obviously, active users walk more steps than non-active users, but the distribution of consuming calories depends on the users. Of course, non-active users tend to be left side of the graph, and active ones tend to be right of one, but some non-active users consume calories more than the mean and median of it. About the relationship between total steps and very active miniutes, non-active users share almost same trends looking like positive correlation. On the other hand, that of active users are more variable. Overall, the correlation between total steps and very active miniutes are positive correlation, so it indicates users are using this device for recording walking steps.
+* Weekday step trends are consistent, except for Sunday, which shows the lowest.
+* Calorie consumption remains stable across weekdays, suggesting other activities contribute to calorie burn.
+* Weekends have lower step counts (mainly due to Sunday), but calories burned remain similar to weekdays.
+* In March, users took fewer steps but still burned similar calories—implying alternative activities or individual differences.
+* Active user walk more, but calorie consumption doesn't directly match activity levels.
+* Some non-active users burn more calories than active ones.
+* There’s a positive correlation (≈0.7) between steps and very active minutes, especially among non-active users.
+* The device is primarily used to track walking, but other factors influence calorie burn.
 
-# Share
-Key tasks
-1. Determine the best way to share your findings.
-2. Create effective data visualizations.
-3. Present your findings.
-4. Ensure your work is accessible.
+## Share
+1. Key tasks
+- [x] Determine the best way to share your findings.
+- [x] Create effective data visualizations.
+- [x] Present your findings.
+- [x] Ensure your work is accessible.
 
+2. Deliverable
+[Presentation](https://github.com/mari-mari123/fitabase_case_study/blob/develop/Presentation.pdf)
 
-# Act
-分析に基づく、上位レベルのコンテンツ推奨事項
+## Act
+1. Key tasks
+- [x] Create your portfolio.
+- [x] Add your case study.
+- [x] Practice presenting your case study to a friend or family member.
+
+2. Deliverable
+[GitHub Repository](https://github.com/mari-mari123/fitabase_case_study)
+
+## Data Source
+
+This project uses the **FitBit Fitness Tracker Data** made available by [Arash Nik](https://www.kaggle.com/datasets/arashnic/fitbit) on Kaggle.
+Dataset title: *FitBit Fitness Tracker Data*
+Released: 2016
+License: [CC0: Public Domain](https://creativecommons.org/publicdomain/zero/1.0/)
