@@ -37,7 +37,7 @@ duplicates = df_combine[df_combine.duplicated(subset=['Id', 'ActivityDate'], kee
 df_combine['ActivityDate'] = pd.to_datetime(df_combine['ActivityDate'], format='%m/%d/%Y')
 
 # get a mean
-df_grouped = df_combine.groupby(['Id', 'ActivityDate']).mean().reset_index()
+df_grouped = df_combine.groupby(['Id', 'ActivityDate'], observed=False).mean().reset_index()
 duplicates_grouped = df_grouped[df_grouped.duplicated(subset=['Id', 'ActivityDate'], keep=False)]
 
 # TotalDistance = TrackerDistance + LoggedActivitiesDistance?
@@ -93,8 +93,8 @@ print('------------Summary-----------')
 print(summary)
 
 # sum and mean by Id
-df_by_Id_sum = round(df_daily[column_without_date].groupby('Id').sum(), 2)
-df_by_Id_mean = round(df_daily[column_without_date].groupby('Id').mean(), 2)
+df_by_Id_sum = round(df_daily[column_without_date].groupby('Id', observed=False).sum(), 2)
+df_by_Id_mean = round(df_daily[column_without_date].groupby('Id', observed=False).mean(), 2)
 print('------------Sum by Id-----------')
 print(df_by_Id_sum)
 print('------------Mean by Id-----------')
@@ -110,7 +110,7 @@ df_daily['WeekDay'] = df_daily['ActivityDate'].dt.day_name()
 print(df_daily)
 
 # update csv file to add weekday column
-df_daily.to_csv('ddata/daily_activity_data_analyze.csv', index = False)
+df_daily.to_csv('data/daily_activity_data_analyze.csv', index = False)
 
 # 4. Document the cleaning process.
 '''

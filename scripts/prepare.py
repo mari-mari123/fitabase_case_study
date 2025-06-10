@@ -35,7 +35,7 @@ print(duplicates)
 df_combine['ActivityDate'] = pd.to_datetime(df_combine['ActivityDate'], format='%m/%d/%Y')
 
 # get a mean
-df_grouped = df_combine.groupby(['Id', 'ActivityDate']).mean().reset_index()
+df_grouped = df_combine.groupby(['Id', 'ActivityDate'], observed=False).mean().reset_index()
 duplicates_grouped = df_grouped[df_grouped.duplicated(subset=['Id', 'ActivityDate'], keep=False)]
 if duplicates_grouped.empty:
   print("there is no duplicates")

@@ -16,12 +16,12 @@ df_daily['WeekDay'] = pd.Categorical(df_daily['WeekDay'], categories=week_order,
 
 
 ## total by weekday
-sum_by_weekday = df_daily[['TotalSteps','CalculatedTotalDistance','Calories','WeekDay']].groupby('WeekDay').sum()
+sum_by_weekday = df_daily[['TotalSteps','CalculatedTotalDistance','Calories','WeekDay']].groupby('WeekDay', observed=False).sum()
 sum_by_weekday = sum_by_weekday.rename(columns={'TotalSteps': 'Total Steps', 'CalculatedTotalDistance': 'Total Distance', 'Calories': 'Total Calories'})
 # print(sum_by_weekday) # Debugging only
 
 ## mean by weekday
-mean_by_weekday = df_daily[['TotalSteps','CalculatedTotalDistance','Calories','WeekDay']].groupby('WeekDay').mean()
+mean_by_weekday = df_daily[['TotalSteps','CalculatedTotalDistance','Calories','WeekDay']].groupby('WeekDay', observed=False).mean()
 mean_by_weekday = mean_by_weekday.rename(columns={'TotalSteps': 'Mean Steps', 'CalculatedTotalDistance': 'Mean Distance', 'Calories': 'Mean Calories'})
 # print(mean_by_weekday) # Debugging only
 
@@ -35,12 +35,12 @@ def classyfy_day(day):
 df_daily['Daytype'] = df_daily['WeekDay'].apply(classyfy_day)
 
 ## mean by weekday vs weekend
-mean_by_daytype = df_daily.groupby(['Daytype'])[['TotalSteps','CalculatedTotalDistance','Calories']].mean()
+mean_by_daytype = df_daily.groupby(['Daytype'], observed=False)[['TotalSteps','CalculatedTotalDistance','Calories']].mean()
 mean_by_daytype = mean_by_daytype.rename(columns={'CalculatedTotalDistance': 'TotalDistance'})
 # print(mean_by_daytype) # Debugging only
 
 ## # of rows by daytype
-count_by_daytype = df_daily.groupby(['Daytype']).size().reset_index()
+count_by_daytype = df_daily.groupby(['Daytype'], observed=False).size().reset_index()
 count_by_daytype.columns = ['Daytype', 'Number of Date']
 # print(count_by_daytype) # Debugging only
 
@@ -52,27 +52,27 @@ df_daily['Month'] = df_daily['ActivityDate'].dt.month
 
 
 ## total by week, month
-sum_by_week = df_daily.groupby('Week')[['TotalSteps','CalculatedTotalDistance','Calories']].sum()
+sum_by_week = df_daily.groupby('Week', observed=False)[['TotalSteps','CalculatedTotalDistance','Calories']].sum()
 sum_by_week = sum_by_week.rename(columns={'TotalSteps': 'Total Steps', 'CalculatedTotalDistance': 'Total Distance', 'Calories': 'Total Calories'})
 # print(sum_by_week) # Debugging only
 
-sum_by_month = df_daily.groupby('Month')[['TotalSteps','CalculatedTotalDistance','Calories']].sum()
+sum_by_month = df_daily.groupby('Month', observed=False)[['TotalSteps','CalculatedTotalDistance','Calories']].sum()
 sum_by_month = sum_by_month.rename(columns={'TotalSteps': 'Total Steps', 'CalculatedTotalDistance': 'Total Distance', 'Calories': 'Total Calories'})
 # print(sum_by_month) # Debugging only
 
 ## mean by week, month
-mean_by_week = df_daily.groupby('Week')[['TotalSteps','CalculatedTotalDistance','Calories']].mean()
+mean_by_week = df_daily.groupby('Week', observed=False)[['TotalSteps','CalculatedTotalDistance','Calories']].mean()
 mean_by_week = mean_by_week.rename(columns={'TotalSteps': 'Mean Steps', 'CalculatedTotalDistance': 'Mean Distance', 'Calories': 'Mean Calories'})
 # print(mean_by_week) # Debugging only
 
-mean_by_month = df_daily.groupby('Month')[['TotalSteps','CalculatedTotalDistance','Calories']].mean()
+mean_by_month = df_daily.groupby('Month', observed=False)[['TotalSteps','CalculatedTotalDistance','Calories']].mean()
 mean_by_month = mean_by_month.rename(columns={'TotalSteps': 'Mean Steps', 'CalculatedTotalDistance': 'Mean Distance', 'Calories': 'Mean Calories'})
 # print(mean_by_month) # Debugging only
 
 ## # of rows by week, month
-count_by_week = df_daily.groupby(['Week']).size()
+count_by_week = df_daily.groupby(['Week'], observed=False).size()
 count_by_week.columns = ['Week Number', 'Number of Date in a Week']
-count_by_month = df_daily.groupby(['Month']).size()
+count_by_month = df_daily.groupby(['Month'], observed=False).size()
 count_by_month.columns = ['Month', 'Number of Date in a Month']
 # print(count_by_week) # Debugging only
 # print(count_by_month)
@@ -83,13 +83,13 @@ count_by_month.columns = ['Month', 'Number of Date in a Month']
 column_without_date = [
   'TotalSteps', 'TrackerDistance', 'LoggedActivitiesDistance', 'VeryActiveDistance', 'ModeratelyActiveDistance', 'LightActiveDistance', 'SedentaryActiveDistance', 'VeryActiveMinutes', 'FairlyActiveMinutes', 'LightlyActiveMinutes', 'SedentaryMinutes', 'Calories', 'CalculatedTotalDistance'
   ]
-sum_by_id = df_daily.groupby(['Id'])[column_without_date].sum()
-mean_by_id = df_daily.groupby(['Id'])[column_without_date].mean()
-max_by_id = df_daily.groupby(['Id'])[column_without_date].max()
-min_by_id = df_daily.groupby(['Id'])[column_without_date].min()
+sum_by_id = df_daily.groupby(['Id'], observed=False)[column_without_date].sum()
+mean_by_id = df_daily.groupby(['Id'], observed=False)[column_without_date].mean()
+max_by_id = df_daily.groupby(['Id'], observed=False)[column_without_date].max()
+min_by_id = df_daily.groupby(['Id'], observed=False)[column_without_date].min()
 
 
-activdate_by_id = df_daily.groupby(['Id'])[['ActivityDate']].size()
+activdate_by_id = df_daily.groupby(['Id'], observed=False)[['ActivityDate']].size()
 date_start = pd.to_datetime('2016-03-12')
 date_end = pd.to_datetime('2016-05-12')
 diff_date = (date_end-date_start).days + 1
@@ -123,7 +123,7 @@ df_rate_activity_min= pd.DataFrame(data=rate_activity_min, index=['Very Active',
 # print(df_rate_activity_min) # Debugging only
 
 ## average calories by date
-total_calories_by_date = df_daily.groupby('ActivityDate')['Calories'].mean().reset_index()
+total_calories_by_date = df_daily.groupby('ActivityDate', observed=False)['Calories'].mean().reset_index()
 total_calories_by_date.columns = ['Activity Date', 'Average Calories']
 # print(total_calories_by_date) # Debugging only
 
@@ -136,13 +136,13 @@ data_active_date = {'Rate': [rate_active_date,rate_none_active_date,rate_active_
 df_rate_active_date = pd.DataFrame(data=data_active_date, index=['Active Date','Non Active Date','Total'])
 # print(df_rate_active_date) # Debugging only
 
-sum_active_min_weekday = df_daily.groupby(['WeekDay'])[['VeryActiveMinutes','FairlyActiveMinutes','LightlyActiveMinutes','SedentaryMinutes']].sum()
+sum_active_min_weekday = df_daily.groupby(['WeekDay'], observed=False)[['VeryActiveMinutes','FairlyActiveMinutes','LightlyActiveMinutes','SedentaryMinutes']].sum()
 # print(sum_active_min_weekday) # Debugging only
-mean_active_min_weekday = df_daily.groupby(['WeekDay'])[['VeryActiveMinutes','FairlyActiveMinutes','LightlyActiveMinutes','SedentaryMinutes']].mean()
+mean_active_min_weekday = df_daily.groupby(['WeekDay'], observed=False)[['VeryActiveMinutes','FairlyActiveMinutes','LightlyActiveMinutes','SedentaryMinutes']].mean()
 # print(mean_active_min_weekday) # Debugging only
-sum_active_min_month = df_daily.groupby(['Month'])[['VeryActiveMinutes','FairlyActiveMinutes','LightlyActiveMinutes','SedentaryMinutes']].sum()
+sum_active_min_month = df_daily.groupby(['Month'], observed=False)[['VeryActiveMinutes','FairlyActiveMinutes','LightlyActiveMinutes','SedentaryMinutes']].sum()
 # print(sum_active_min_month) # Debugging only
-mean_active_min_month = df_daily.groupby(['Month'])[['VeryActiveMinutes','FairlyActiveMinutes','LightlyActiveMinutes','SedentaryMinutes']].mean()
+mean_active_min_month = df_daily.groupby(['Month'], observed=False)[['VeryActiveMinutes','FairlyActiveMinutes','LightlyActiveMinutes','SedentaryMinutes']].mean()
 # print(mean_active_min_month) # Debugging only
 
 # 4. Identify trends and relationships.
@@ -153,10 +153,10 @@ correlation = df_daily[['TotalSteps','VeryActiveDistance','VeryActiveMinutes', '
 correlation_avtivity = df_daily[['TrackerDistance', 'VeryActiveMinutes', 'FairlyActiveMinutes', 'LightlyActiveMinutes', 'SedentaryMinutes']].corr()
 # print(correlation_avtivity) # Debugging only
 
-correlation_activity_weekday = df_daily.groupby(['WeekDay'])[['TotalSteps','VeryActiveMinutes', 'FairlyActiveMinutes', 'LightlyActiveMinutes', 'SedentaryMinutes']].corr()
+correlation_activity_weekday = df_daily.groupby(['WeekDay'], observed=False)[['TotalSteps','VeryActiveMinutes', 'FairlyActiveMinutes', 'LightlyActiveMinutes', 'SedentaryMinutes']].corr()
 # print(correlation_activity_weekday) # Debugging only
 
-correlation_activity_month = df_daily.groupby(['Month'])[['TotalSteps','VeryActiveMinutes', 'FairlyActiveMinutes', 'LightlyActiveMinutes', 'SedentaryMinutes']].corr()
+correlation_activity_month = df_daily.groupby(['Month'], observed=False)[['TotalSteps','VeryActiveMinutes', 'FairlyActiveMinutes', 'LightlyActiveMinutes', 'SedentaryMinutes']].corr()
 # print(correlation_activity_month) # Debugging only
 
 ## 2. comparison among users
